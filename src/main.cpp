@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Game.h"
+#include "Cell.h"
 
 using namespace std;
 
@@ -10,8 +11,6 @@ int main() {
     GameDimensions dims = {
         800,
         800,
-        600,
-        600,
         20,
         20
     };

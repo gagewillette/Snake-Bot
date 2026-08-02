@@ -9,6 +9,32 @@
 Game::Game(GameDimensions dims, bool isFullscreen) {
     this->gameDims = dims;
 
+    int cellCount = 0;
+
+    // Calc width & height of cells (dangerous as they should be the same)
+    int cellWidth = dims.windowWidth / dims.boardHorizontalCellCount;
+
+    // working values
+    int cellX = 0, cellY = 0 ;
+
+    vector<Cell *> workingVec;
+
+    for (int i = 0 ; i < dims.boardHorizontalCellCount ; i++) {
+        for (int j = 0 ; j < dims.boardVerticalCellCount ; j++) {
+            // Create new cell objects and push onto working vector
+            // Abritrary border width, can be changed here for now
+            Cell * cell = new Cell(cellX, cellY, cellWidth, 2, cellCount);
+            workingVec.push_back(cell);
+            cellCount ++;
+            cellX += cellWidth;
+        }
+
+        board.push_back(workingVec);
+        workingVec.empty();
+        cellY += cellWidth;
+        cellX = 0;
+    }
+
     init();
 }
 
@@ -26,7 +52,7 @@ bool Game::init() {
     this->window = SDL_CreateWindow("Snake Bot KMS",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                          this->width, this->height,
+                                          this->gameDims.windowWidth, this->gameDims.windowHeight,
                                           this->fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
     if(!window) {
         std::cout << "Failed to create window\n";
@@ -43,6 +69,7 @@ bool Game::init() {
     }
 
     this->run = true;
+    return true;
 }
 
 void Game::update() {
@@ -53,7 +80,17 @@ void Game::render() {
 
     SDL_RenderClear(renderer);
 
+    drawBoard();
+
     SDL_RenderPresent(renderer);
+}
+
+void Game::drawBoard() {
+    for (const auto & row : board) {
+        for (auto c : row) {
+            c->render(renderer);
+        }
+    }
 }
 
 void Game::handleEvents() {

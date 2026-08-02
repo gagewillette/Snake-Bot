@@ -3,6 +3,7 @@
 //
 
 #include <SDL.h>
+#include <vector>
 
 #include "Cell.h"
 
@@ -12,11 +13,11 @@
 struct GameDimensions {
     int windowWidth;
     int windowHeight;
-    int boardWidthPx;
-    int boardHeightPx;
     int boardHorizontalCellCount;
     int boardVerticalCellCount;
 };
+
+using namespace std;
 
 class Game {
 
@@ -44,10 +45,9 @@ private:
 
     GameDimensions gameDims{};
 
-    // Cell matrix
-    Cell[boardWidth][boardHeight] board;
+    // Placeholder board
+    vector<vector<Cell *>> board;
 
-    int width{}, height{};
     bool fullscreen{};
 };
 
