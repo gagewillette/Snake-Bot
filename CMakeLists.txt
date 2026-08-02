@@ -39,6 +39,8 @@ add_executable(snake_bot src/main.cpp
         src/Game.h
         src/Cell.cpp
         src/Cell.h
+        src/Snake.cpp
+        src/Snake.h
 )
 
 # Link your executable against SDL
